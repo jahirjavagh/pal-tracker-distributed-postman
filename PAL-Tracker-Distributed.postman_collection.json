@@ -1310,8 +1310,22 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"var jsonData = pm.response.json();",
+									"var jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"userId\", jsonData.id);",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var userNameSuffix = postman.getEnvironmentVariable(\"userNameSuffix\");",
+									"userNameSuffix++;",
+									"var userName = postman.getEnvironmentVariable(\"userNamePrefix\") + userNameSuffix;",
+									"postman.setEnvironmentVariable(\"userName\",userName)",
+									"postman.setEnvironmentVariable(\"userNameSuffix\",userNameSuffix)",
 									""
 								]
 							}
@@ -1394,7 +1408,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"var jsonData = pm.response.json();",
+									"var jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"accountId\", jsonData[0].id);"
 								]
 							}
@@ -1456,8 +1470,21 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"var jsonData = pm.response.json();",
+									"var jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"projectId\", jsonData.id);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var projectNameSuffix = postman.getEnvironmentVariable(\"projectNameSuffix\");",
+									"projectNameSuffix++;",
+									"var userName = postman.getEnvironmentVariable(\"projectNamePrefix\") + projectNameSuffix;",
+									"postman.setEnvironmentVariable(\"projectName\",userName)",
+									"postman.setEnvironmentVariable(\"projectNameSuffix\",projectNameSuffix)"
 								]
 							}
 						}
@@ -1545,7 +1572,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"var jsonData = pm.response.json();",
+									"var jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"allocationId\", jsonData.id);"
 								]
 							}
@@ -1634,8 +1661,21 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"var jsonData = pm.response.json();",
+									"var jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"storyId\", jsonData.id);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var storyNameSuffix = postman.getEnvironmentVariable(\"storyNameSuffix\");",
+									"storyNameSuffix++;",
+									"var storyName = postman.getEnvironmentVariable(\"storyNamePrefix\") + storyNameSuffix;",
+									"postman.setEnvironmentVariable(\"storyName\",storyName)",
+									"postman.setEnvironmentVariable(\"storyNameSuffix\",storyNameSuffix)"
 								]
 							}
 						}
@@ -1723,7 +1763,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"var jsonData = pm.response.json();",
+									"var jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"timeEntryId\", jsonData.id);"
 								]
 							}
