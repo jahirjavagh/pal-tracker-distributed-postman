@@ -1312,7 +1312,9 @@
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"userId\", jsonData.id);",
-									""
+									"",
+									"tests[\"userId is valid\"] = jsonData.userId !== null;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
 								]
 							}
 						},
@@ -1358,33 +1360,28 @@
 				},
 				{
 					"name": "Get User By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"userId is valid\"] = jsonData.userId !== null;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "user",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "saveHelperData",
-									"type": "any"
-								},
-								{
-									"key": "showPassword",
-									"value": false,
-									"type": "boolean"
-								}
-							]
-						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic dXNlcjpwYXNzd29yZA=="
+							}
+						],
 						"body": {},
 						"url": {
 							"raw": "{{registration-route}}/users/{{userId}}",
@@ -1409,38 +1406,22 @@
 								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"accountId\", jsonData[0].id);"
+									"postman.setEnvironmentVariable(\"accountId\", jsonData[0].id);",
+									"",
+									"tests[\"accountId is valid\"] = jsonData.accountId !== null;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
 								]
 							}
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "user",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "saveHelperData",
-									"type": "any"
-								},
-								{
-									"key": "showPassword",
-									"value": false,
-									"type": "boolean"
-								}
-							]
-						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic dXNlcjpwYXNzd29yZA=="
+							}
+						],
 						"body": {},
 						"url": {
 							"raw": "{{registration-route}}/accounts?ownerId={{userId}}",
@@ -1471,7 +1452,10 @@
 								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"projectId\", jsonData.id);"
+									"postman.setEnvironmentVariable(\"projectId\", jsonData.id);",
+									"",
+									"tests[\"projectId is valid\"] = jsonData.projectId !== null;",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;"
 								]
 							}
 						},
@@ -1516,31 +1500,20 @@
 				},
 				{
 					"name": "Get Projects By Account Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "user",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "saveHelperData",
-									"type": "any"
-								},
-								{
-									"key": "showPassword",
-									"value": false,
-									"type": "boolean"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"body": {},
@@ -1573,7 +1546,10 @@
 								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"allocationId\", jsonData.id);"
+									"postman.setEnvironmentVariable(\"allocationId\", jsonData.id);",
+									"",
+									"tests[\"allocationId is valid\"] = jsonData.allocationId !== null;",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;"
 								]
 							}
 						}
@@ -1605,31 +1581,18 @@
 				},
 				{
 					"name": "Get Allocations By Project id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "user",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "saveHelperData",
-									"type": "any"
-								},
-								{
-									"key": "showPassword",
-									"value": false,
-									"type": "boolean"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"body": {},
@@ -1662,7 +1625,10 @@
 								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"storyId\", jsonData.id);"
+									"postman.setEnvironmentVariable(\"storyId\", jsonData.id);",
+									"",
+									"tests[\"storyId is valid\"] = jsonData.storyId !== null;",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;"
 								]
 							}
 						},
@@ -1707,31 +1673,18 @@
 				},
 				{
 					"name": "Get Stories By Project Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "user",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "saveHelperData",
-									"type": "any"
-								},
-								{
-									"key": "showPassword",
-									"value": false,
-									"type": "boolean"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"body": {},
@@ -1764,7 +1717,10 @@
 								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"timeEntryId\", jsonData.id);"
+									"postman.setEnvironmentVariable(\"timeEntryId\", jsonData.id);",
+									"",
+									"tests[\"timeEntryId is valid\"] = jsonData.timeEntryId !== null;",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;"
 								]
 							}
 						}
@@ -1796,31 +1752,18 @@
 				},
 				{
 					"name": "Get Time Entries By User Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "user",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "saveHelperData",
-									"type": "any"
-								},
-								{
-									"key": "showPassword",
-									"value": false,
-									"type": "boolean"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"body": {},
