@@ -1794,292 +1794,420 @@
 			"description": "",
 			"item": [
 				{
-					"name": "Register New User",
-					"event": [
+					"name": "Preparation",
+					"description": "Preparation Before Stopping Registration Server",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"postman.setEnvironmentVariable(\"userId\", jsonData.id);",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"name\": \"{{userName}}\"}"
-						},
-						"url": {
-							"raw": "{{registration-route}}/registration",
-							"host": [
-								"{{registration-route}}"
-							],
-							"path": [
-								"registration"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Get Accounts By Owner Id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"postman.setEnvironmentVariable(\"accountId\", jsonData[0].id);"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
+							"name": "Register New User",
+							"event": [
 								{
-									"key": "username",
-									"value": "user",
-									"type": "string"
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"userId\", jsonData.id);",
+											"",
+											"tests[\"userId is valid\"] = jsonData.userId !== null;",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										]
+									}
 								},
 								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "saveHelperData",
-									"type": "any"
-								},
-								{
-									"key": "showPassword",
-									"value": false,
-									"type": "boolean"
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var userNameSuffix = postman.getEnvironmentVariable(\"userNameSuffix\");",
+											"userNameSuffix++;",
+											"var userName = postman.getEnvironmentVariable(\"userNamePrefix\") + userNameSuffix;",
+											"postman.setEnvironmentVariable(\"userName\",userName)",
+											"postman.setEnvironmentVariable(\"userNameSuffix\",userNameSuffix)",
+											""
+										]
+									}
 								}
-							]
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"{{userName}}\"}"
+								},
+								"url": {
+									"raw": "{{registration-route}}/registration",
+									"host": [
+										"{{registration-route}}"
+									],
+									"path": [
+										"registration"
+									]
+								},
+								"description": ""
+							},
+							"response": []
 						},
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "{{registration-route}}/accounts?ownerId={{userId}}",
-							"host": [
-								"{{registration-route}}"
-							],
-							"path": [
-								"accounts"
-							],
-							"query": [
+						{
+							"name": "Get Accounts By Owner Id",
+							"event": [
 								{
-									"key": "ownerId",
-									"value": "{{userId}}",
-									"equals": true
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"accountId\", jsonData[0].id);",
+											"",
+											"tests[\"accountId is valid\"] = jsonData.accountId !== null;",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										]
+									}
 								}
-							]
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "password",
+											"type": "string"
+										},
+										{
+											"key": "saveHelperData",
+											"type": "any"
+										},
+										{
+											"key": "showPassword",
+											"value": false,
+											"type": "boolean"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{registration-route}}/accounts?ownerId={{userId}}",
+									"host": [
+										"{{registration-route}}"
+									],
+									"path": [
+										"accounts"
+									],
+									"query": [
+										{
+											"key": "ownerId",
+											"value": "{{userId}}",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
 						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Add New Project A",
-					"event": [
 						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"postman.setEnvironmentVariable(\"projectIdA\", jsonData.id);"
-								]
-							}
+							"name": "Add New Project A",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"projectIdA\", jsonData.id);",
+											"",
+											"tests[\"projectIdA is valid\"] = jsonData.projectIdA !== null;",
+											"tests[\"Status code is 201\"] = responseCode.code === 201;"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var projectNameSuffix = postman.getEnvironmentVariable(\"projectNameSuffix\");",
+											"projectNameSuffix++;",
+											"var userName = postman.getEnvironmentVariable(\"projectNamePrefix\") + projectNameSuffix;",
+											"postman.setEnvironmentVariable(\"projectName\",userName)",
+											"postman.setEnvironmentVariable(\"projectNameSuffix\",projectNameSuffix)"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"{{projectName}}A\", \"accountId\": {{accountId}} }"
+								},
+								"url": {
+									"raw": "{{registration-route}}/projects",
+									"host": [
+										"{{registration-route}}"
+									],
+									"path": [
+										"projects"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Add New Project B",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"postman.setEnvironmentVariable(\"projectIdB\", jsonData.id);",
+											"",
+											"tests[\"projectIdB is valid\"] = jsonData.projectIdB !== null;",
+											"tests[\"Status code is 201\"] = responseCode.code === 201;"
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var projectNameSuffix = postman.getEnvironmentVariable(\"projectNameSuffix\");",
+											"projectNameSuffix++;",
+											"var userName = postman.getEnvironmentVariable(\"projectNamePrefix\") + projectNameSuffix;",
+											"postman.setEnvironmentVariable(\"projectName\",userName)",
+											"postman.setEnvironmentVariable(\"projectNameSuffix\",projectNameSuffix)"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"{{projectName}}B\", \"accountId\": {{accountId}} }"
+								},
+								"url": {
+									"raw": "{{registration-route}}/projects",
+									"host": [
+										"{{registration-route}}"
+									],
+									"path": [
+										"projects"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Add New Allocation A",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 201\"] = responseCode.code === 201;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"projectId\": {{projectIdA}}, \"userId\": {{userId}}, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+								},
+								"url": {
+									"raw": "{{allocations-route}}/allocations",
+									"host": [
+										"{{allocations-route}}"
+									],
+									"path": [
+										"allocations"
+									]
+								},
+								"description": ""
+							},
+							"response": []
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"name\": \"{{projectName}}A\", \"accountId\": {{accountId}} }"
-						},
-						"url": {
-							"raw": "{{registration-route}}/projects",
-							"host": [
-								"{{registration-route}}"
-							],
-							"path": [
-								"projects"
-							]
-						},
-						"description": ""
-					},
-					"response": []
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Add New Project B",
-					"event": [
+					"name": "Stop Registration Server",
+					"description": "",
+					"item": [],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Demonstrate Failures",
+					"description": "",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"postman.setEnvironmentVariable(\"projectIdB\", jsonData.id);"
-								]
-							}
+							"name": "Add New Allocation A - Cached Project",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 201\"] = responseCode.code === 201;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"projectId\": {{projectIdA}}, \"userId\": {{userId}}, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+								},
+								"url": {
+									"raw": "{{allocations-route}}/allocations",
+									"host": [
+										"{{allocations-route}}"
+									],
+									"path": [
+										"allocations"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Add New Allocation B - Fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 503\"] = responseCode.code === 503;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"projectId\": {{projectIdB}}, \"userId\": {{userId}}, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+								},
+								"url": {
+									"raw": "{{allocations-route}}/allocations",
+									"host": [
+										"{{allocations-route}}"
+									],
+									"path": [
+										"allocations"
+									]
+								},
+								"description": ""
+							},
+							"response": []
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"name\": \"{{projectName}}B\", \"accountId\": {{accountId}} }"
-						},
-						"url": {
-							"raw": "{{registration-route}}/projects",
-							"host": [
-								"{{registration-route}}"
-							],
-							"path": [
-								"projects"
-							]
-						},
-						"description": ""
-					},
-					"response": []
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Add New Allocation A",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"projectId\": {{projectIdA}}, \"userId\": {{userId}}, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
-						},
-						"url": {
-							"raw": "{{allocations-route}}/allocations",
-							"host": [
-								"{{allocations-route}}"
-							],
-							"path": [
-								"allocations"
-							]
-						},
-						"description": ""
-					},
-					"response": []
+					"name": "Start Registration Server",
+					"description": "",
+					"item": [],
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Add New Allocation B - Fail",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"projectId\": {{projectIdB}}, \"userId\": {{userId}}, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
-						},
-						"url": {
-							"raw": "{{allocations-route}}/allocations",
-							"host": [
-								"{{allocations-route}}"
+					"name": "Create Allocation on Recovery",
+					"description": "",
+					"item": [
+						{
+							"name": "Add New Allocation B - Succeed",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 201\"] = responseCode.code === 201;"
+										]
+									}
+								}
 							],
-							"path": [
-								"allocations"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Add New Allocation A - Cached Project",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"projectId\": {{projectIdA}}, \"userId\": {{userId}}, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
-						},
-						"url": {
-							"raw": "{{allocations-route}}/allocations",
-							"host": [
-								"{{allocations-route}}"
-							],
-							"path": [
-								"allocations"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Add New Allocation B - Succeed",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"projectId\": {{projectIdB}}, \"userId\": {{userId}}, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
-						},
-						"url": {
-							"raw": "{{allocations-route}}/allocations",
-							"host": [
-								"{{allocations-route}}"
-							],
-							"path": [
-								"allocations"
-							]
-						},
-						"description": ""
-					},
-					"response": []
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"projectId\": {{projectIdB}}, \"userId\": {{userId}}, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+								},
+								"url": {
+									"raw": "{{allocations-route}}/allocations",
+									"host": [
+										"{{allocations-route}}"
+									],
+									"path": [
+										"allocations"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		},
@@ -3358,12 +3486,12 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "{{allocations-route}}/",
+							"raw": "{{allocations-route}}/env",
 							"host": [
 								"{{allocations-route}}"
 							],
 							"path": [
-								""
+								"env"
 							]
 						},
 						"description": ""
